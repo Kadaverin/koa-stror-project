@@ -15,8 +15,8 @@ export class BooksController {
 
     const books: Book[] = await BooksRepository.find({ ownerId } );
 
-		ctx.status = OK;
-		ctx.body = books;
+    ctx.status = OK;
+    ctx.body = books;
   }
 
   public static async createBook (ctx: BaseContext) {

@@ -4,21 +4,21 @@ import { Book } from './book';
 
 @Entity()
 export class User {
-	@PrimaryGeneratedColumn()
-	id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-	@Column({ length: 80 })
-	@Length(80)
-	name: string;
+  @Column({ length: 80 })
+  @Length(80)
+  name: string;
 
-	@Column({ length: 100 })
-	@Length(5, 100)
-	@IsEmail()
-	email: string;
+  @Column({ length: 100 })
+  @Length(5, 100)
+  @IsEmail()
+  email: string;
 
-	@OneToMany(type => Book, book => book.owner, {
-		cascade: true,
-		onDelete: 'CASCADE',
-	})
-	books: Book[];
+  @OneToMany(type => Book, book => book.owner, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  books: Book[];
 }
