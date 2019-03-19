@@ -1,4 +1,4 @@
-import { IWeatherData } from './weather-data.interface';
+import { IWeatherData } from './../interfaces';
 
 export class WeatherData implements IWeatherData {
   temperature: number;
