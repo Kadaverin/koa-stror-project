@@ -15,7 +15,10 @@ export class WeatherStatisticsDisplay extends AbstractDisplay {
   }
 
   public display(): void {
-    console.log(this.statistics);
+    console.log(
+      `*** Weather statistics display *** :\n` +
+      this.statistics.toString()
+    );
   }
 
   protected receiveData(data: IWeatherData) {

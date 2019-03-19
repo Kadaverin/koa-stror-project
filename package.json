@@ -9,7 +9,8 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "serve": "node dist/server.js",
     "build": "npm run tslint && npm run build-ts",
-    "start": "npm run serve"
+    "start": "npm run serve",
+    "observer-demo": "ts-node ./src/observer-pattern-demo/index.ts"
   },
   "engines": {
     "node": "8.x.x",

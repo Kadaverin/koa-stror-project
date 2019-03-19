@@ -1,6 +1,6 @@
 import { AbstractObservable } from './../../observer/abstractions';
-import { IWeatherData } from './../WeatherData/';
 import { IWeatherStation } from './weather-station.interface';
+import { IWeatherData } from '../interfaces';
 
 
 export class WeatherStation extends AbstractObservable implements IWeatherStation {

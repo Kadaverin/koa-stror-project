@@ -12,10 +12,14 @@ export class WeatherStatistics implements IWeatherStatistics {
   private _avgPressury: number;
   private _avgHumidity: number;
   
-  constructor( temperatures?: number, humidities?: number, pressuries?: number ) {
-    this._avgTemperature = temperatures;
-    this._avgHumidity = humidities;
-    this._avgPressury = pressuries;
+  constructor( 
+    temperatures: number[] = [],
+    humidities: number[] = [],
+    pressuries: number[] = [],
+  ) {
+    this.temperatures = temperatures;
+    this.humidities = humidities;
+    this.pressuries = pressuries;
 
     this.updateStatistics();
   }
@@ -49,10 +53,9 @@ export class WeatherStatistics implements IWeatherStatistics {
 
   toString() {
     return (
-      `Average temperature: ${ this.avgTemperature }F \n
-       Average humidity: ${ this.avgHumidity } \n
-       Average pressury: ${ this.avgPressury }
-      `
+      `Average temperature: ${ this.avgTemperature }F \n` +
+      `Average humidity: ${ this.avgHumidity } \n` +
+      `Average pressury: ${ this.avgPressury }`
     );
   }
 }

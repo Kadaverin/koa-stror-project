@@ -6,7 +6,9 @@ export class CurrentConditionsDisplay extends AbstractDisplay {
   humidity: number;
 
   public display(): void {
-    console.log(`Current conditions: ${ this.temperature }F degrees and humidity ${ this.humidity }`);
+    console.log(
+      `*** Current conditions display *** : ${ this.temperature }F degrees and humidity ${ this.humidity }`
+    );
   }
 
   protected receiveData(data: IWeatherConditions) {
