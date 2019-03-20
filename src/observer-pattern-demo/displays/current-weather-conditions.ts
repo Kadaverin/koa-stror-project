@@ -1,7 +1,7 @@
 import { AbstractDisplay } from './abstractions/abstract-display';
 import { IWeatherConditions } from './../weather/interfaces';
 
-export class CurrentConditionsDisplay extends AbstractDisplay { 
+export class CurrentConditionsDisplay extends AbstractDisplay {
   temperature: number;
   humidity: number;
 

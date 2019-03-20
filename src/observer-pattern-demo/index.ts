@@ -1,8 +1,8 @@
 
-import { CurrentConditionsDisplay } from "./displays/current-weather-conditions";
-import { WeatherStation } from "./weather/WeatherStations/weather-station";
-import { WeatherStatisticsDisplay } from "./displays/statistics-display";
-import { WeatherData } from "./weather/WeatherData";
+import { CurrentConditionsDisplay } from './displays/current-weather-conditions';
+import { WeatherStation } from './weather/WeatherStations/weather-station';
+import { WeatherStatisticsDisplay } from './displays/statistics-display';
+import { WeatherData } from './weather/WeatherData';
 
 
 const station = new WeatherStation();

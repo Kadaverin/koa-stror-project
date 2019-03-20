@@ -5,10 +5,10 @@ import { IWeatherStatistics } from '../weather/WeatherStatistic/weather-statisti
 import { WeatherStatistics } from '../weather/WeatherStatistic/weather-statistic';
 
 
-export class WeatherStatisticsDisplay extends AbstractDisplay { 
+export class WeatherStatisticsDisplay extends AbstractDisplay {
 
   public statistics: IWeatherStatistics;
-  
+
   constructor(subject: IObservable) {
     super(subject);
     this.statistics = new WeatherStatistics();

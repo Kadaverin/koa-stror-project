@@ -1,5 +1,5 @@
-import { IWeatherStatistics } from "./weather-statistic.interface";
-import { IWeatherData } from "../interfaces";
+import { IWeatherStatistics } from './weather-statistic.interface';
+import { IWeatherData } from '../interfaces';
 import { average } from './utils';
 
 
@@ -11,8 +11,8 @@ export class WeatherStatistics implements IWeatherStatistics {
   private _avgTemperature: number;
   private _avgPressury: number;
   private _avgHumidity: number;
-  
-  constructor( 
+
+  constructor(
     temperatures: number[] = [],
     humidities: number[] = [],
     pressuries: number[] = [],

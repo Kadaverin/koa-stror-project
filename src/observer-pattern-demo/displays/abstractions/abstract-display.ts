@@ -12,9 +12,9 @@ export abstract class AbstractDisplay implements IDisplayElement, IObserver {
 
   constructor(subject: IObservable) {
     this.subject = subject;
-    this.subject.registerObserver(this)
+    this.subject.registerObserver(this);
   }
-  
+
   protected abstract receiveData(data: any): void;
 
   public update(data: any): void {

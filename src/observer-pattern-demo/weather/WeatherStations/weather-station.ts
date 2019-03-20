@@ -14,6 +14,6 @@ export class WeatherStation extends AbstractObservable implements IWeatherStatio
   protected getDataToUpdateObservers(): IWeatherData {
     return this.currentWeatherData;
   }
-  
+
 }
 
