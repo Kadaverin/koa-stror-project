@@ -22,6 +22,3 @@ export abstract class AbstractDisplay implements IDisplayElement, IObserver {
     this.display();
   }
 }
-
-
-
