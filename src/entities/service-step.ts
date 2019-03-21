@@ -18,7 +18,7 @@ export class ServiceStep {
 
   @Column()
   @IsEnum(ServiceStepsEnum)
-  name: string;
+  name: ServiceStepsEnum;
 
   @Column()
   @IsInt()
