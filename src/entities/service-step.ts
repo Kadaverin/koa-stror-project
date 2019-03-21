@@ -32,4 +32,8 @@ export class ServiceStep {
     nullable: false
   })
   service: Service;
+
+  constructor(partiall: Partial<ServiceStep>) {
+    Object.assign(this, partiall);
+  }
 }

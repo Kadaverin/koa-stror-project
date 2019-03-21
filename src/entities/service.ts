@@ -11,4 +11,8 @@ export class Service {
     onDelete: 'CASCADE',
   })
   steps: ServiceStep[];
+
+  constructor(partiall: Partial<Service>) {
+    Object.assign(this, partiall);
+  }
 }

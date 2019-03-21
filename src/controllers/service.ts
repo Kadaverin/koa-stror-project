@@ -18,16 +18,14 @@ export class ServicesController {
       ctx.throw(BAD_REQUEST, 'The "flowSteps" array can not be empty')
     }
 
+    const serviceToBeSaved = new Service({});
+    let service = null
 
-    await getManager().transaction( async transactionManager => {
-      const ServiceRepository: Repository<Service> = transactionManager.getRepository(Service);
-      const ServiceStepsRepository: Repository<ServiceStep> = transactionManager.getRepository(ServiceStep);
+    await getManager().transaction( async transactionManager => {      
+      service = await transactionManager.save(serviceToBeSaved);
 
-      const serviceToBeSaved = await ServiceRepository.create();
-      const service = await ServiceRepository.save(serviceToBeSaved);
-
-      flowSteps.forEach( async (name, order) => {
-        const stepToBeSaved = await ServiceStepsRepository.create({
+      const steps = await Promise.all(flowSteps.map( async (name, order) => {
+        const stepToBeSaved = new ServiceStep({
           name,
           order,
           service,
@@ -39,16 +37,18 @@ export class ServicesController {
           ctx.throw(BAD_REQUEST, 'Bad request', { errors });
         }
 
-        await ServiceStepsRepository.save(stepToBeSaved);
-      });
-      
-      ctx.status = CREATED;
-      ctx.body = service;
+        return stepToBeSaved;   
+       }));
+
+       await transactionManager.save(steps)
     });
+
+    ctx.status = CREATED;
+    ctx.body = service;
 
   }
 
   public static async executeService (ctx: BaseContext) {
-
+    
   }
 }
