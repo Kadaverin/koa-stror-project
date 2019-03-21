@@ -12,36 +12,38 @@ export class ServicesController {
     const flowSteps = ctx.request.body.flowSteps;
     const validator = new Validator();
 
-    if(!flowSteps) {
+    if (!flowSteps) {
       ctx.throw(BAD_REQUEST, 'The "flowSteps" array is required');
     }
 
-    if(!flowSteps.length) {
+    if (!flowSteps.length) {
       ctx.throw(BAD_REQUEST, 'The "flowSteps" array can not be empty');
     }
 
     const errors = flowSteps.reduce((stepErrors, step) => {
-      
-      if(!validator.isEnum(step, ServiceStepsEnum)) {
+
+      if (!validator.isEnum(step, ServiceStepsEnum)) {
         stepErrors.push(`'${ step }' is not allowed service step!`);
       }
 
       return stepErrors;
     }, []);
 
-    if(errors.length > 0) {
+    if (errors.length > 0) {
       ctx.throw(BAD_REQUEST, 'Incorrect flowSteps are given', { errors });
     }
 
     const ServicesRepository: Repository<Service> = await getManager().getRepository(Service);
-    
+
+    ServicesRepository.clear();
+
     const steps: ServiceStep[] = flowSteps.map((name: ServiceStepsEnum, index: number): ServiceStep => (
       new ServiceStep({
         name,
         order: index + 1,
       })
     ));
-      
+
     const serviceToBeSaved = new Service({ steps });
 
     const service = await ServicesRepository.save(serviceToBeSaved);
@@ -52,6 +54,6 @@ export class ServicesController {
   }
 
   public static async executeService (ctx: BaseContext) {
-    
+
   }
 }
