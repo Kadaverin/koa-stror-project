@@ -10,8 +10,7 @@
     "serve": "node dist/server.js",
     "build": "npm run tslint && npm run build-ts",
     "start": "npm run serve",
-    "observer-demo": "ts-node ./observer-pattern-demo/index.ts",
-    "debug":"node --inspect nodemon --watch 'src/**/*' -e ts,tsx --exec ts-node src/server.ts"
+    "observer-demo": "ts-node ./observer-pattern-demo/index.ts"
   },
   "engines": {
     "node": "8.x.x",

@@ -1,10 +1,11 @@
-import { Transform } from 'stream';
+import { Transform, TransformCallback } from 'stream';
 
 export abstract class AbstractStreamTransformer extends Transform {
   _transform(chunk, _, callback) {
     try {
       const transformedData = this.transformChunk(chunk);
-      this.push(transformedData);
+      callback(undefined , transformedData);
+
     } catch (error) {
       callback(error);
     }

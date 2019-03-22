@@ -14,7 +14,7 @@ const iv = Buffer.alloc(16, 0);
 
 const createTransformerCreator = TransformerClass =>
   (options: StreamProcessingClassOptionsType) => new TransformerClass(options);
-  
+
 
 export const transformersCreatorsByNames: IStreamFactoryTransformersSettings = {
   [ServiceStepsEnum.lowerCase]: createTransformerCreator(LowerCaseStreamTransformer),

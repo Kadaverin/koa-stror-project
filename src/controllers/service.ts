@@ -55,13 +55,14 @@ export class ServicesController {
 
   public static async executeService (ctx: BaseContext) {
 
+    ctx.set('Cache-Control', 'no-cache');
+    ctx.set('Content-Disposition', `attachment; filename=${ctx.query.saveAs || 'file'}`);
+    ctx.set('Content-Type', 'application/octet-stream');
+    ctx.set('Content-Transfer-Encoding', 'binary');
+
     const ServicesRepository = getManager().getRepository(Service);
     const id = +ctx.params.id;
 
-    ctx.set('Cache-Control', 'no-cache');
-    ctx.set('Content-Disposition', 'attachment; filename=file.txt');
-    ctx.set('Content-Type', 'application/octet-stream');
-    ctx.set('Content-Transfer-Encoding', 'binary');
 
     const service = await ServicesRepository.findOne(id, { relations: ['steps'] });
 
@@ -70,8 +71,6 @@ export class ServicesController {
     }
 
     ctx.body = PipelinesService.buildTransformPipeline(ctx.req, service.steps);
-    ctx.status = OK;
-    ctx.res.end();
 
   }
 }
