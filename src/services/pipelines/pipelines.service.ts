@@ -5,11 +5,9 @@ import streamTransmormersFactory from './stream-transformers/factory/stream-tran
 
 
 export class PipelineService {
-  private streamTransformersFactory: IStreamTransmormersFactory;
-
-  constructor(streamTransformersFactory: IStreamTransmormersFactory) {
-    this.streamTransformersFactory = streamTransformersFactory;
-  }
+  constructor(
+    private streamTransformersFactory: IStreamTransmormersFactory,
+  ) {}
 
   buildTransformPipeline(targetStream: Readable, serviceSteps: ServiceStep[]): Readable {
     return serviceSteps
@@ -17,7 +15,7 @@ export class PipelineService {
       .reduce(( pipeline, transformStep) =>
         pipeline.pipe(this.streamTransformersFactory.create(transformStep.name)),
         targetStream
-      )
+      );
   }
 }
 

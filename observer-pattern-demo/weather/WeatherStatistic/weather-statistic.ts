@@ -4,23 +4,16 @@ import { average } from './utils';
 
 
 export class WeatherStatistics implements IWeatherStatistics {
-  private temperatures: number[];
-  private humidities: number[];
-  private pressuries: number[];
 
   private _avgTemperature: number;
   private _avgPressury: number;
   private _avgHumidity: number;
 
   constructor(
-    temperatures: number[] = [],
-    humidities: number[] = [],
-    pressuries: number[] = [],
+    private temperatures: number[] = [],
+    private humidities: number[] = [],
+    private pressuries: number[] = [],
   ) {
-    this.temperatures = temperatures;
-    this.humidities = humidities;
-    this.pressuries = pressuries;
-
     this.updateStatistics();
   }
 

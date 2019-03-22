@@ -24,7 +24,6 @@ export class ServicesController {
     }
 
     const errors = flowSteps.reduce((stepErrors, step) => {
-
       if (!validator.isEnum(step, ServiceStepsEnum)) {
         stepErrors.push(`'${ step }' is not allowed service step!`);
       }
@@ -37,8 +36,6 @@ export class ServicesController {
     }
 
     const ServicesRepository: Repository<Service> = getManager().getRepository(Service);
-
-    ServicesRepository.clear();
 
     const steps: ServiceStep[] = flowSteps.map((name: ServiceStepsEnum, index: number): ServiceStep => (
       new ServiceStep({
@@ -62,7 +59,7 @@ export class ServicesController {
     ctx.set('Content-Disposition', 'attachment; filename=file.txt');
     ctx.set('Content-Type', 'application/octet-stream');
     ctx.set('Content-Transfer-Encoding', 'binary');
-    
+
     const ServicesRepository = getManager().getRepository(Service);
     const id = +ctx.params.id;
 
@@ -71,9 +68,10 @@ export class ServicesController {
     if (!service) {
       ctx.throw(BAD_REQUEST, 'The service you are trying to execute does not exists');
     }
-    
+
     ctx.body = PipelinesService.buildTransformPipeline(ctx.req, service.steps);
     ctx.status = OK;
     ctx.res.end();
+
   }
 }

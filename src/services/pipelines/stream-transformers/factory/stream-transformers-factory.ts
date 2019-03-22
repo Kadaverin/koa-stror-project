@@ -5,14 +5,13 @@ import { transformersByNames } from './utils';
 
 
 export class StreamTransmormersFactory implements IStreamTransmormersFactory {
-  //private transformerClassesByNames;
 
-  constructor(private transformerClassesByNames: IStreamFactoryTransformersSettings) {
-    //this.transformerClassesByNames = transformerClassesByName;
-  }
+  constructor(
+    private transformerClassesByNames: IStreamFactoryTransformersSettings,
+  ) {}
 
   create(name: string, opts?: TransformOptions): Transform {
-    
+
     const TransformerClass = this.transformerClassesByNames[name];
 
     if (!TransformerClass) {
@@ -21,7 +20,7 @@ export class StreamTransmormersFactory implements IStreamTransmormersFactory {
 
     const transformer = new TransformerClass(opts);
 
-    return transformer
+    return transformer;
   }
 }
 
