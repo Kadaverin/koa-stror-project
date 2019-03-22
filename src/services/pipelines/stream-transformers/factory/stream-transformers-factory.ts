@@ -5,20 +5,23 @@ import { transformersByNames } from './utils';
 
 
 export class StreamTransmormersFactory implements IStreamTransmormersFactory {
-  private transformerClassesByNames;
+  //private transformerClassesByNames;
 
-  constructor(transformerClassesByName: IStreamFactoryTransformersSettings) {
-    this.transformerClassesByNames = transformerClassesByName;
+  constructor(private transformerClassesByNames: IStreamFactoryTransformersSettings) {
+    //this.transformerClassesByNames = transformerClassesByName;
   }
 
   create(name: string, opts?: TransformOptions): Transform {
+    
     const TransformerClass = this.transformerClassesByNames[name];
 
     if (!TransformerClass) {
       throw new Error(`Unknown transformer name '${ name }'`);
     }
 
-    return new TransformerClass(opts);
+    const transformer = new TransformerClass(opts);
+
+    return transformer
   }
 }
 

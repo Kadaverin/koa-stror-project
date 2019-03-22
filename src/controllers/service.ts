@@ -1,14 +1,17 @@
 import { BaseContext } from 'koa';
 import { getManager, Repository } from 'typeorm';
-import { OK, CREATED, NO_CONTENT, BAD_REQUEST } from 'http-status-codes';
+import { OK, CREATED, NO_CONTENT, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
 import { validate, ValidationError, IsEnum , Validator } from 'class-validator';
 
 import { Service, ServiceStep } from './../entities';
 import { ServiceStepsEnum } from './../utils/enums/service-steps.enum';
+import PipelinesService from './../services/pipelines/pipelines.service';
+import { Readable } from 'stream';
 
 export class ServicesController {
 
   public static async createService (ctx: BaseContext) {
+
     const flowSteps = ctx.request.body.flowSteps;
     const validator = new Validator();
 
@@ -33,7 +36,7 @@ export class ServicesController {
       ctx.throw(BAD_REQUEST, 'Incorrect flowSteps are given', { errors });
     }
 
-    const ServicesRepository: Repository<Service> = await getManager().getRepository(Service);
+    const ServicesRepository: Repository<Service> = getManager().getRepository(Service);
 
     ServicesRepository.clear();
 
@@ -55,5 +58,22 @@ export class ServicesController {
 
   public static async executeService (ctx: BaseContext) {
 
+    ctx.set('Cache-Control', 'no-cache');
+    ctx.set('Content-Disposition', 'attachment; filename=file.txt');
+    ctx.set('Content-Type', 'application/octet-stream');
+    ctx.set('Content-Transfer-Encoding', 'binary');
+    
+    const ServicesRepository = getManager().getRepository(Service);
+    const id = +ctx.params.id;
+
+    const service = await ServicesRepository.findOne(id, { relations: ['steps'] });
+
+    if (!service) {
+      ctx.throw(BAD_REQUEST, 'The service you are trying to execute does not exists');
+    }
+    
+    ctx.body = PipelinesService.buildTransformPipeline(ctx.req, service.steps);
+    ctx.status = OK;
+    ctx.res.end();
   }
 }

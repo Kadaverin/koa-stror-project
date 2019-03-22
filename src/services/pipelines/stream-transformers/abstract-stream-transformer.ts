@@ -5,7 +5,7 @@ export abstract class AbstractStreamTransformer extends Transform {
     try {
       const transformedData = this.transformChunk(chunk);
       this.push(transformedData);
-    } catch ( error ) {
+    } catch (error) {
       callback(error);
     }
   }
