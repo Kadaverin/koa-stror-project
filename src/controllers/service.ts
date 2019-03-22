@@ -55,13 +55,13 @@ export class ServicesController {
 
   public static async executeService (ctx: BaseContext) {
 
+    const ServicesRepository = getManager().getRepository(Service);
+    const id = +ctx.params.id;
+
     ctx.set('Cache-Control', 'no-cache');
     ctx.set('Content-Disposition', 'attachment; filename=file.txt');
     ctx.set('Content-Type', 'application/octet-stream');
     ctx.set('Content-Transfer-Encoding', 'binary');
-
-    const ServicesRepository = getManager().getRepository(Service);
-    const id = +ctx.params.id;
 
     const service = await ServicesRepository.findOne(id, { relations: ['steps'] });
 

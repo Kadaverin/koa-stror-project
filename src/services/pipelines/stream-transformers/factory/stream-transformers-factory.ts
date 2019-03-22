@@ -1,27 +1,28 @@
 import { IStreamTransmormersFactory, IStreamFactoryTransformersSettings } from './interfaces';
-import { Transform, TransformOptions } from 'stream';
-import { transformersByNames } from './utils';
+import { Transform } from 'stream';
+import { transformersCreatorsByNames } from './utils';
+
+import { StreamProcessingClassOptionsType } from './interfaces';
 
 
 
 export class StreamTransmormersFactory implements IStreamTransmormersFactory {
 
   constructor(
-    private transformerClassesByNames: IStreamFactoryTransformersSettings,
+    private transformersCreatorsByNames: IStreamFactoryTransformersSettings,
   ) {}
 
-  create(name: string, opts?: TransformOptions): Transform {
+  create(name: string, opts?: StreamProcessingClassOptionsType) {
 
-    const TransformerClass = this.transformerClassesByNames[name];
+    const transformerCreator = this.transformersCreatorsByNames[name];
 
-    if (!TransformerClass) {
+    if (!transformerCreator) {
       throw new Error(`Unknown transformer name '${ name }'`);
     }
 
-    const transformer = new TransformerClass(opts);
 
-    return transformer;
+    return transformerCreator(opts);
   }
 }
 
-export default new StreamTransmormersFactory(transformersByNames);
+export default new StreamTransmormersFactory(transformersCreatorsByNames);
