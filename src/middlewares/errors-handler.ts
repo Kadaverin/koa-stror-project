@@ -2,7 +2,7 @@ async function errorsHandler(ctx, next) {
   try {
     await next();
   } catch (err) {
-    console.error(err);
+    console.log(err);
     ctx.status = err.status || 500;
     ctx.body = err;
   }

@@ -1,7 +1,7 @@
 import { BaseContext } from 'koa';
 import { getManager, Repository, Not, Equal } from 'typeorm';
 import { validate, ValidationError } from 'class-validator';
-import { 
+import {
   BAD_REQUEST,
   NO_CONTENT,
   NOT_FOUND,
