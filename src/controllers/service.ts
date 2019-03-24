@@ -1,12 +1,12 @@
 import { BaseContext } from 'koa';
 import { getManager, Repository } from 'typeorm';
-import { OK, CREATED, NO_CONTENT, BAD_REQUEST, NOT_FOUND } from 'http-status-codes';
-import { validate, ValidationError, IsEnum , Validator } from 'class-validator';
+import { CREATED, BAD_REQUEST } from 'http-status-codes';
+import { Validator } from 'class-validator';
 
-import { Service, ServiceStep } from './../entities';
-import { ServiceStepsEnum } from './../utils/enums/service-steps.enum';
 import PipelinesService from './../services/pipelines/pipelines.service';
-import { Readable } from 'stream';
+import { Service, ServiceStep } from './../entities';
+import { ServiceStepsEnum, ServiceStatesEnum } from './../utils/enums';
+
 
 export class ServicesController {
 
@@ -44,7 +44,10 @@ export class ServicesController {
       })
     ));
 
-    const serviceToBeSaved = new Service({ steps });
+    const serviceToBeSaved = new Service({ 
+      state: ServiceStatesEnum.NEW,
+      steps
+    });
 
     const service = await ServicesRepository.save(serviceToBeSaved);
 
