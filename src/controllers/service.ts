@@ -44,7 +44,7 @@ export class ServicesController {
       })
     ));
 
-    const serviceToBeSaved = new Service({ 
+    const serviceToBeSaved = new Service({
       state: ServiceStatesEnum.NEW,
       steps
     });

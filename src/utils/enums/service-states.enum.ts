@@ -4,6 +4,6 @@ export enum ServiceStatesEnum {
   PENDING = 'PENDING',
   DEPLOYED = 'DEPLOYED',
   REFUND = 'REFUND',
-  CLOSE = 'CLOSE'
+  CLOSED = 'CLOSED'
 
 }
