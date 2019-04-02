@@ -3,6 +3,8 @@ import { IsEnum } from 'class-validator';
 
 import { ServiceStatesEnum } from '../utils/enums/service-states.enum';
 import { ServiceStep } from './service-step';
+import { IServiceState } from 'src/domains/service/state/service-states/abstractions/service-state.interface';
+
 
 @Entity({ name: 'Services' })
 export class Service {
@@ -19,7 +21,29 @@ export class Service {
   })
   steps: ServiceStep[];
 
-  constructor(partiall: Partial<Service>) {
+  private currentState: IServiceState;
+
+  constructor(partiall: Partial<Service>, private ServiceStatesFactory) {
     Object.assign(this, partiall);
+    this.setStateByName();
+  }
+
+  next() {
+    return this.currentState.next(this);
+  }
+
+  close() {
+    return this.currentState.close(this);
+  }
+
+  refund() {
+    return this.currentState.refund(this);
+  }
+
+  setStateByName(state: ServiceStatesEnum = this.state): Service {
+    this.currentState = this.ServiceStatesFactory.buildStateByName(state);
+    return this;
   }
 }
+
+
