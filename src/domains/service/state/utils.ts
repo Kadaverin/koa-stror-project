@@ -8,13 +8,17 @@ import {
 } from './service-states';
 
 import { ServiceStatesEnum } from 'src/utils/enums';
-import { AbstractServiceState } from './service-states/abstractions';
+import { IServiceState } from './service-states/abstractions/service-state.interface';
 
-type StatesClassesByNames = {
-  [state in ServiceStatesEnum]: typeof AbstractServiceState
+export interface IServiceStateClass {
+  new(): IServiceState;
+}
+
+export type StatesClassesByNamesType = {
+  [state in ServiceStatesEnum]: IServiceStateClass
 };
 
-export const statesClassesByNames: StatesClassesByNames = {
+export const statesClassesByNames: StatesClassesByNamesType = {
   [NewState.stateName]: NewState,
   [ProcessingState.stateName]: ProcessingState,
   [PendingState.stateName]: PendingState,
