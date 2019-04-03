@@ -1,6 +1,6 @@
 import { AbstractServiceState } from './abstractions';
-import { ServiceStatesEnum } from 'src/utils/enums';
-import { Service } from 'src/entities';
+import { ServiceStatesEnum } from './../../../../utils/enums';
+import { Service } from './../../../../entities';
 
 export class DelpoyedState extends AbstractServiceState {
   public static readonly stateName = ServiceStatesEnum.DEPLOYED;
@@ -11,6 +11,6 @@ export class DelpoyedState extends AbstractServiceState {
 
   refund(service: Service): Service {
     service.state = ServiceStatesEnum.REFUND;
-    return service.setStateByName(service.state);
+    return service.updateState(service.state);
   }
 }

@@ -3,9 +3,9 @@ import { IsEnum } from 'class-validator';
 
 import { ServiceStatesEnum } from '../utils/enums/service-states.enum';
 import { ServiceStep } from './service-step';
-import { IServiceState } from 'src/domains/service/state/service-states/abstractions/service-state.interface';
-import { ServiceStateFactory } from 'src/domains/service/state/service-state-factory';
-
+import { IServiceState } from './../domains/service/states/service-states/abstractions/service-state.interface';
+import { serviceStatesFactoryInstance, IServiceStatesFactory } from './../domains/service/states';
+import { ServiceStateMutationsEnum } from 'src/utils/enums';
 
 
 @Entity({ name: 'Services' })
@@ -24,10 +24,15 @@ export class Service {
   steps: ServiceStep[];
 
   private currentState: IServiceState;
+  private statesFactory: IServiceStatesFactory;
 
-  constructor(partiall: Partial<Service>, private serviceStatesFactory: ServiceStateFactory) {
+  constructor(partiall: Partial<Service>) {
     Object.assign(this, partiall);
-    this.setStateByName();
+  }
+
+  public initializeStateMachine(serviceStatesFactory: IServiceStatesFactory = serviceStatesFactoryInstance) {
+    this.statesFactory = serviceStatesFactory;
+    return this.updateState();
   }
 
   next() {
@@ -42,8 +47,12 @@ export class Service {
     return this.currentState.refund(this);
   }
 
-  setStateByName(state: ServiceStatesEnum = this.state): Service {
-    this.currentState = this.serviceStatesFactory.buildStateByName(state);
+  mutateState( mutationName: ServiceStateMutationsEnum ) {
+    return this[ mutationName ]();
+  }
+
+  updateState( stateName: ServiceStatesEnum = this.state ): Service {
+    this.currentState = this.statesFactory.buildStateByName(stateName);
     return this;
   }
 }

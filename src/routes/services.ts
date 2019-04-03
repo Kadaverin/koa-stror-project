@@ -7,5 +7,6 @@ const ServicesRouter = new Router({
 
 ServicesRouter.post('/', ServicesController.createService);
 ServicesRouter.post('/:id/execute', ServicesController.executeService);
+ServicesRouter.patch('/:id', ServicesController.changeServiceState);
 
 export { ServicesRouter };

@@ -1,6 +1,6 @@
 import { AbstractServiceState } from './abstractions';
-import { ServiceStatesEnum } from 'src/utils/enums';
-import { Service } from 'src/entities';
+import { ServiceStatesEnum } from './../../../../utils/enums';
+import { Service } from './../../../../entities';
 
 export class NewState extends AbstractServiceState {
   public static readonly stateName = ServiceStatesEnum.NEW;
@@ -11,6 +11,6 @@ export class NewState extends AbstractServiceState {
 
   next(service: Service): Service {
     service.state = ServiceStatesEnum.PROCESSING;
-    return service.setStateByName(service.state);
+    return service.updateState(service.state);
   }
 }

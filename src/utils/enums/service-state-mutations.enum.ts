@@ -1,5 +1,5 @@
-export enum ServiceStateMutations {
-  NEXT = 'NEXT',
-  CLOSE = 'CLOSE',
-  REFUND = 'REFUND',
+export enum ServiceStateMutationsEnum {
+  NEXT = 'next',
+  CLOSE = 'close',
+  REFUND = 'refund',
 }

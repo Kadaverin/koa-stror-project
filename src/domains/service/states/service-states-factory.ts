@@ -1,8 +1,9 @@
 import { statesClassesByNames, StatesClassesByNamesType } from './utils';
 import { IServiceState } from './service-states/abstractions/service-state.interface';
-import { ServiceStatesEnum } from 'src/utils/enums';
+import { ServiceStatesEnum } from './../../../utils/enums';
+import { IServiceStatesFactory } from './service-states-factory.interface';
 
-export class ServiceStateFactory {
+export class ServiceStatesFactory implements IServiceStatesFactory {
   private stateInstancesByNames = {};
 
   constructor(
@@ -21,4 +22,6 @@ export class ServiceStateFactory {
   }
 }
 
-export default new ServiceStateFactory(statesClassesByNames);
+export const serviceStatesFactoryInstance = new ServiceStatesFactory(statesClassesByNames);
+
+

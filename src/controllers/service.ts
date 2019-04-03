@@ -1,11 +1,11 @@
 import { BaseContext } from 'koa';
 import { getManager, Repository } from 'typeorm';
-import { CREATED, BAD_REQUEST } from 'http-status-codes';
+import { CREATED, BAD_REQUEST, OK, INTERNAL_SERVER_ERROR } from 'http-status-codes';
 import { Validator } from 'class-validator';
 
 import PipelinesService from './../services/pipelines/pipelines.service';
 import { Service, ServiceStep } from './../entities';
-import { ServiceStepsEnum, ServiceStatesEnum } from './../utils/enums';
+import { ServiceStepsEnum, ServiceStatesEnum, ServiceStateMutationsEnum } from './../utils/enums';
 
 
 export class ServicesController {
@@ -74,6 +74,39 @@ export class ServicesController {
     }
 
     ctx.body = PipelinesService.buildTransformPipeline(ctx.req, service.steps);
+
+  }
+
+  public static async changeServiceState (ctx: BaseContext) {
+      const id = +ctx.params.id;
+      const mutationName: ServiceStateMutationsEnum = ctx.request.body.state;
+
+      const validator = new Validator();
+
+      if ( !validator.isEnum(mutationName, ServiceStateMutationsEnum) ) {
+        ctx.throw(BAD_REQUEST, 'The field "state" must be one of "next" | "close" | "refund"');
+      }
+
+      const ServicesRepository = getManager().getRepository(Service);
+
+      const serviceToChangeState = await ServicesRepository.findOne(id);
+
+      if ( !serviceToChangeState ) {
+        ctx.throw(BAD_REQUEST, 'The service you are trying to change state does not exists');
+      }
+
+      let serviceToSave: Service;
+
+      try {
+        serviceToSave = serviceToChangeState.initializeStateMachine().mutateState(mutationName);
+      } catch (error) {
+        ctx.throw(INTERNAL_SERVER_ERROR, error.message);
+      }
+
+      const serviceWithChangedState = await ServicesRepository.save(serviceToSave);
+
+      ctx.status = OK;
+      ctx.body = serviceWithChangedState;
 
   }
 }

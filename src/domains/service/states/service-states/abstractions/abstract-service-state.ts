@@ -1,7 +1,6 @@
-import { Service } from 'src/entities';
-import { ServiceStatesEnum } from 'src/utils/enums';
+import { Service } from './../../../../../entities';
+import { ServiceStatesEnum } from './../../../../../utils/enums';
 import { IServiceState } from './service-state.interface';
-
 
 
 export abstract class AbstractServiceState implements IServiceState {
@@ -21,7 +20,7 @@ export abstract class AbstractServiceState implements IServiceState {
 
   protected generateNotAllowedExeption(targetMethod: string) {
     throw new Error(
-      `The method ${ targetMethod } is not allowed for state ${ this.stateName }`
+      `The mutation method "${ targetMethod }" is not allowed for state "${ this.stateName }"`
     );
   }
 }

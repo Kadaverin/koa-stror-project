@@ -1,5 +1,5 @@
-import { Service } from 'src/entities';
-import { ServiceStatesEnum } from 'src/utils/enums';
+import { Service } from './../../../../../entities';
+import { ServiceStatesEnum } from './../../../../../utils/enums';
 
 export interface IServiceState {
   readonly stateName: ServiceStatesEnum;

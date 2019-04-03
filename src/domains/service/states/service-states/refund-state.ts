@@ -1,6 +1,6 @@
 import { AbstractServiceState } from './abstractions';
-import { ServiceStatesEnum } from 'src/utils/enums';
-import { Service } from 'src/entities';
+import { ServiceStatesEnum } from './../../../../utils/enums';
+import { Service } from './../../../../entities';
 
 export class RefundState extends AbstractServiceState {
   public static readonly stateName = ServiceStatesEnum.REFUND;
@@ -11,6 +11,6 @@ export class RefundState extends AbstractServiceState {
 
   close(service: Service): Service {
     service.state = ServiceStatesEnum.CLOSED;
-    return service.setStateByName(service.state);
+    return service.updateState(service.state);
   }
 }
