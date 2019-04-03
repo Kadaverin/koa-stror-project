@@ -5,14 +5,18 @@ import * as helmet from 'koa-helmet';
 import * as cors from '@koa/cors';
 import * as winston from 'winston';
 import * as dotenv from 'dotenv';
-import { createConnection } from 'typeorm';
-import 'reflect-metadata';
+import * as serve from 'koa-static';
 import * as PostgressConnectionStringParser from 'pg-connection-string';
+import { createConnection } from 'typeorm';
+
+import 'reflect-metadata';
 
 import router  from './routes';
 import { errorsHandler } from './middlewares';
 import { logger } from './logging';
 import { config } from './config';
+
+const koaSwagger = require('koa2-swagger-ui');
 
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config({ path: '.env' });
@@ -42,6 +46,16 @@ createConnection({
  }).then(async connection => {
 
   const app = new Koa();
+
+  app.use(serve('public'));
+  app.use(
+      koaSwagger({
+          routePrefix: '/swagger',
+          swaggerOptions: {
+              url: '/swagger.yml'
+          }
+      })
+  );
 
   // Provides important security headers to make your app more secure
   app.use(helmet());

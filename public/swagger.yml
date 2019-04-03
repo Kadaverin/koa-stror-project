@@ -1,0 +1,209 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: File service api
+  license:
+    name: MIT
+# host: petstore.swagger.io
+basePath: /
+schemes:
+  - http
+consumes:
+  - application/json
+  - application/octet-stream
+produces:
+  - application/json
+  - application/octet-stream
+
+utils: 
+  enums:
+    enum: &serviceStepNamesEnum
+        - "upperCase"
+        - "lowerCase"
+        - "removeSpaces" 
+        - "gzip"
+        - "ungzip"
+        - "encrypt"
+        - "decrypt"
+paths:
+  /services:
+    post:
+      summary: 'Create file processing service'
+      operationId: 'createService'
+      parameters:
+        - name: flowSteps
+          in: body
+          required: true
+          type: array
+          items: 
+            type: string
+            enum: *serviceStepNamesEnum
+          description: 'Array of file processing flow step names'
+      responses:
+        "201":
+          description: Expected response to a valid request
+          schema:
+            $ref: '#/definitions/Service'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /services/{id}/execute: 
+    post:
+      summary: 'Execute target service'
+      operationId: 'executeService'
+      parameters:
+        - name: binary
+          in: body
+          required: true
+          schema:
+            type: string
+            format: binary
+        - name: saveAs
+          in: query
+          description: 'Name for result file'
+          type: string
+      responses:
+        "200":
+          description: Returns processed file
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users:
+    get:
+      summary: List all users
+      operationId: getUsers
+      tags:
+        - users
+      responses:
+        "200":
+          description: Array of users
+          schema:
+            $ref: '#/definitions/Users'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a user
+      operationId: createUser
+      tags:
+        - users
+      parameters:
+        - name: name
+          in: body
+          required: true
+          type: string
+        - name: email
+          in: body
+          required: true
+          type: string
+      responses:
+        "201":
+          description: User
+          schema:
+            $ref: '#/definitions/User'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /users/{id}:
+    get:
+      summary: Info for a specific user
+      operationId: getUserById
+      tags:
+        - users
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the user to retrieve
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          schema:
+            $ref: '#/definitions/UserWithBooks'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  Service: 
+    required:
+      - id
+    properties: 
+      id:
+        type: integer
+      steps:
+        $ref: '#definitions/ServiceSteps'
+  ServiceStep: 
+    required:
+      - id
+      - name
+    properties: 
+      id:
+        type: integer
+      name: 
+        type: string
+        enum : *serviceStepNamesEnum
+  ServiceSteps:
+    type: array
+    items: 
+      $ref: '#definitions/ServiceStep'     
+  User:
+    required:
+      - id
+      - name
+      - email
+    properties:
+      id:
+        type: integer
+      name:
+        type: string 
+      email: 
+        type: string
+        format: email
+  UserWithBooks: 
+    $ref: '#/definitions/User'
+    properties: 
+       books: 
+        $ref: '#/definitions/Books'
+  Users:
+    type: array
+    items:
+      $ref: '#/definitions/User'
+  Book: 
+    required:
+      - id
+      - date
+      - description
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      date: 
+        type: string
+        format: date
+  Books: 
+    type: array
+    items: 
+      $ref: '#/definitions/Book'
+  Error:
+    required:
+      - code
+      - error
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
